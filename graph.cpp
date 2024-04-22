@@ -96,18 +96,14 @@ void            Graph<D, K>::bfs(K source){
         time++;
         Node* current = Q[head];
         head++;
-        for(int i = 0; i < V.size(); i ++){
-            if(V[i]->key == current->key){
-                for(K edge : E[i]){
-                    Node* edgep = this->get(edge);
-                    if(edgep->distance == -1){
-                        edgep->distance = time;
-                        edgep->colorbfs = 1;
-                        edgep->pi = current;
-                        Q[tail] = edgep;
-                        tail++;
-                    }
-                }
+        for(K edge : E[current->place]){
+            Node* edgep = this->get(edge);
+            if(edgep->distance == -1){
+                edgep->distance = time;
+                edgep->colorbfs = 1;
+                edgep->pi = current;
+                Q[tail] = edgep;
+                tail++;
             }
         }
     }  
