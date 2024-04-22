@@ -232,42 +232,24 @@ string          Graph<D, K>::edge_class(K u, K v)
 template <class D, class K>
 void            Graph<D, K>::bfs_tree(K source)
 {
-    Node *sNode = get(source);                  
-    if(sNode != nullptr) {                      // We only move on if we have a valid source vertex
-        stringstream ss;
-        sNode->color = true;
-        sNode->distance = 0;
-        sNode->pi = nullptr;
-        for(auto& node: V) {                    // Iterate through all vertices
-            node->color = false;
-            node->distance = -1;
-            node->pi = nullptr;
-        }
-        queue<Node*> temp;                      // Initialize queue for traversal
-        temp.push(sNode);
-        ss << sNode->key << endl;
-        while(!temp.empty()) {
-            int lvl = temp.size();              // Indicates number of vertices at current level
-            vector<K> lvlK;
-            for(int i = 0; i < lvl; i++) {
-                Node * u = temp.front();
-                temp.pop();
-                for(const K& v: V[u->place]) {
-                    Node *vNode = get(v);       // Get the pointer to the vertex
-                    if(!vNode->color) {
-                        vNode->color = true;
-                        vNode->distance = u->distance + 1;
-                        vNode->pi = u;
-                        temp.push(vNode);
-                        lvlK.push_back(v);
-                    }
-                }
+    bfs(source);
+    vector<vector<K>> temp;
+    stringstream ss;
+    for(Node *u : V) {
+        if(u->colorbfs) {
+            if(u->distance >= temp.size()) {
+                temp.resize(temp.size() + 1);
             }
-            for(const K& key: lvlK) {
-                ss << key << " ";
-            }
-            ss << endl;
+            temp[u->distance].push_back(u->key);
         }
-        cout << ss.str();
     }
+    for(auto& tem : temp) {
+        for(K& key : tem) {
+            ss << key << " ";
+        }
+        ss << endl;
+    }
+    cout << ss.str();
 }
+
+
