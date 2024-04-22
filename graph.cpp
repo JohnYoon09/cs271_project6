@@ -16,7 +16,7 @@
 // Post-condition: Graph is created
 // Return: None
 //========================================================
-template <typename D, typename K>
+template <class D, class K>
         Graph<D, K>::Graph(vector<D> data, vector<K> keys, vector<vector<K>> edges)
 {
 }
@@ -29,7 +29,7 @@ template <typename D, typename K>
 // Post-condition: None
 // Return: pointer to the vertex with the key k
 //========================================================
-template <typename D, typename K>
+template <class D, class K>
 *Node        Graph<D, K>::get(K key)
 {
     for(auto &node : V) {           // Iterate through all vertices in the Graph
@@ -48,7 +48,7 @@ template <typename D, typename K>
 // Post-condition: None
 // Return: bool value indicating if vertex with key v is reachable from vertex with key u
 //========================================================
-template <typename D, typename K>
+template <class D, class K>
 bool        Graph<D, K>::reachable(K u, K v)
 {
     bfs(u);
@@ -63,10 +63,24 @@ bool        Graph<D, K>::reachable(K u, K v)
 // Post-condition: None
 // Return: None
 //========================================================
-template <typename D, typename K>
+template <class D, class K>
 void            Graph<D, K>::bfs(K source)
 {
 
+}
+
+//========================================================
+// DFS
+// Performs depth-first search algorithm
+// Parameters: s - key of the source vertex
+// Pre-condition: None
+// Post-condition: None
+// Return: None
+//========================================================
+template <class D, class K>
+void            Graph<D, K>>::dfs(K source)
+{
+    
 }
 
 //========================================================
@@ -77,7 +91,7 @@ void            Graph<D, K>::bfs(K source)
 // Post-condition: None
 // Return: None
 //========================================================
-template <typename D, typename K>
+template <class D, class K>
 void            Graph<D, K>::print_path(K u, K v)
 {
     if(reachable(u, v)) {                               // We only move on if there exists a path
@@ -109,7 +123,7 @@ void            Graph<D, K>::print_path(K u, K v)
 // Post-condition: None
 // Return: String representation of the edge classification
 //========================================================
-template <typename D, typename K>
+template <class D, class K>
 string          Graph<D, K>::edge_class(K u, K v)
 {
 }
@@ -122,7 +136,7 @@ string          Graph<D, K>::edge_class(K u, K v)
 // Post-condition: None
 // Return: None
 //========================================================
-template <typename D, typename K>
+template <class D, class K>
 void            Graph<D, K>::bfs_tree(K source)
 {
     Node *sNode = get(source);                  
