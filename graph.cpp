@@ -19,7 +19,7 @@
 template <class D, class K>
 Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges){
     E = edges;
-    for(int i = 0; i < keys.size(); i++){
+    for(long unsigned int i = 0; i < keys.size(); i++){
         V.push_back(new Graph<D,K>::Node);
         V[i]->key = keys[i];
         V[i]->data = data[i];
@@ -133,7 +133,6 @@ void            Graph<D, K>::bfs(K source){
 template<class D, class K>
 void Graph<D,K>::dfs(){
     int time = 0;
-    Node* S[V.size()+1];
     for(Node* node : V){
         if(node->color == 0){
             time = dfs_visit(node, time);
@@ -263,13 +262,13 @@ void            Graph<D, K>::bfs_tree(K source)
         }
     }
     printf("170 \n");
-    for(auto& tem : temp) {
+    for(vector<K> tem : temp) {
         printf("171 \n");
-        for(K& key : tem) {
+        for(K key : tem) {
             ss << key << " ";
             printf("172 \n");
         }
-        ss << endl;
+        ss << "\n";
     }
     printf("173 \n");
     cout << ss.str();
