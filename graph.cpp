@@ -63,7 +63,7 @@ template <class D, class K>
 bool        Graph<D, K>::reachable(K u, K v)
 {
     bfs(u);
-    return (get(v)->color);         // Returns true if vertex with key v was visited from the bfs on key y
+    return (get(v)->colorbfs);         // Returns true if vertex with key v was visited from the bfs on key y
 }
 
 //========================================================
@@ -75,10 +75,44 @@ bool        Graph<D, K>::reachable(K u, K v)
 // Return: None
 //========================================================
 template <class D, class K>
-void            Graph<D, K>::bfs(K source)
-{
+void            Graph<D, K>::bfs(K source){
+    int time = 0;
+    Node* Q[V.size()+1];
+    int head = 0, tail = 0;
+    for (Node* x : V){
+        if(x->key != source){
+            x-> dis = -1;
+        }
+        else{
+            x-> dis = time;
+            x->colorbfs = 1;
+            Q[tail] = x;
+            tail++;
+        }
+        x-> pi = nullptr;
+    };
 
+    while(tail != head){
+        time++;
+        Node* current = Q[head];
+        head++;
+        for(int i = 0; i < V.size(); i ++){
+            if(V[i]->key == current->key){
+                for(K edge : E[i]){
+                    Node* edgep = this->Get(edge);
+                    if(edgep->dis == -1){
+                        edgep->dis = time;
+                        edgep->colorbfs = 1;
+                        edgep->pi = current;
+                        Q[tail] = edgep;
+                        tail++;
+                    }
+                }
+            }
+        }
+    }  
 }
+
 
 //========================================================
 // DFS
@@ -89,10 +123,39 @@ void            Graph<D, K>::bfs(K source)
 // Return: None
 //========================================================
 template <class D, class K>
-void            Graph<D, K>>::dfs(K source)
-{
-    
+void            Graph<D, K>>::dfs(K source)template<class D, class K>
+void Graph<D,K>::dfs(){
+    int time = 0;
+    Node* S[V.size()+1];
+    for(Node* node : V){
+        if(node->color == 0){
+            time = dfs_visit(node, time);
+        }
+    }
 }
+
+
+template<class D, class K>
+int Graph<D,K>::dfs_visit(Node* u, int time){
+    time++;
+    u->f1 = time;
+    u->color = 1;
+    for(int i = 0; i < V.size(); i++){
+        if(V[i] == u){
+            for( K key : E[i]){
+                Node* edge = this->Get(key);
+                if(edge->color == 0){
+                    edge->dpi = u;
+                    time = dfs_visit(edge, time);
+                }
+            }
+        }
+    }
+    u->color = 2;
+    time++;
+    u->f2 =time;
+    return time;
+}     
 
 //========================================================
 // Print path
