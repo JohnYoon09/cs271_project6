@@ -13,7 +13,7 @@
 #include <string>
 #include <vector> 
 #include <queue>
-#include <tuple>
+
 
 using namespace std;
 template <class D, class K> // D is data type and K is key type
@@ -23,12 +23,20 @@ class Graph{
         struct Node{
             D data;
             K key;
-            *Node pi;
-            bool color;
+            Node* pi;
             int dis;
+            int f1;
+            int f2;
+            Node* dpi;
+            char color;
+            bool colorbfs;
         };
-        *Node E[];
-        K V[][];
+
+        vector<Node*> V;
+        vector<vector<K>> E;
+
+        void dfs();
+        int dfs_visit(Node* u, int time);
 
     public:
         Graph(vector<D> data, vector<K> keys, vector<vector<K>> edges); // Constructor
