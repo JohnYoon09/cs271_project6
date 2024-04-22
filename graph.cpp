@@ -17,8 +17,19 @@
 // Return: None
 //========================================================
 template <class D, class K>
-        Graph<D, K>::Graph(vector<D> data, vector<K> keys, vector<vector<K>> edges)
-{
+Graph<D, K>::Graph(vector<D> data, vector<K> keys, vector<vector<K>> edges){
+    E = edges;
+    for(int i = 0; i < keys.size(); i++){
+        Node* newNode = new Node;  // Create a new Node
+        newNode->key = keys[i];
+        newNode->data = data[i];
+        newNode->f1 = -1;
+        newNode->f2 = -1;
+        newNode->color = 0;
+        newNode->dpi = nullptr;
+        V.push_back(newNode);  // Add the new Node to the vector V
+    }
+    this->dfs();
 }
 
 //========================================================
