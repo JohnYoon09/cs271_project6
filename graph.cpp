@@ -17,15 +17,17 @@
 // Return: None
 //========================================================
 template <class D, class K>
-Graph<D, K>::Graph(vector<D> data, vector<K> keys, vector<vector<K>> edges){
+Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges){
     E = edges;
     for(int i = 0; i < keys.size(); i++){
+        V.push_back(new Graph<D,K>::Node);
         V[i]->key = keys[i];
         V[i]->data = data[i];
+        V[i]->pi = nullptr;
         V[i]->f1 = -1;
         V[i]->f2 = -1;
         V[i]->color = 0;
-        V[i]->color = 0;
+        V[i]->colorbfs = 0;
         V[i]->dpi = nullptr;
         V[i]->place = i;
 
@@ -42,9 +44,9 @@ Graph<D, K>::Graph(vector<D> data, vector<K> keys, vector<vector<K>> edges){
 // Return: pointer to the vertex with the key k
 //========================================================
 template <class D, class K>
-typename Graph<D, K>::Node* get(K key)
+struct Graph<D, K>::Node* Graph<D,K>::get(K key)
 {
-    for(auto &node : Graph<D,K>::V) {           // Iterate through all vertices in the Graph
+    for(Node* node : Graph<D,K>::V) {           // Iterate through all vertices in the Graph
         if(node->key == key) {
             return node;            // Returns pointer to the vertex if found
         }
@@ -63,10 +65,21 @@ typename Graph<D, K>::Node* get(K key)
 template <class D, class K>
 bool        Graph<D, K>::reachable(K u, K v)
 {
+    bool bu = 0, bv = 0;
+    for(Node* x : V){
+        if(x->key == u){
+            bu = 1;
+        }
+        if(x->key == v){
+            bv = 1;
+        }
+    }
+    if(bu && bv){
     bfs(u);
     return (get(v)->colorbfs);         // Returns true if vertex with key v was visited from the bfs on key y
+    }
+    return 0;
 }
-
 //========================================================
 // BFS
 // Performs breadth-first search algorithm
@@ -81,27 +94,26 @@ void            Graph<D, K>::bfs(K source){
     Node* Q[V.size()+1];
     int head = 0, tail = 0;
     for (Node* x : V){
-        if(x->key != source){
-            x-> distance = -1;
-        }
-        else{
+        if(x->key == source){
             x-> distance = time;
             x->colorbfs = 1;
             Q[tail] = x;
             tail++;
         }
+        else{
+            x-> distance = -1;
+        }
         x-> pi = nullptr;
     }
     while(tail != head){
-        time++;
         Node* current = Q[head];
         head++;
         for(K edge : E[current->place]){
             Node* edgep = this->get(edge);
             if(edgep->distance == -1){
-                edgep->distance = time;
-                edgep->colorbfs = 1;
                 edgep->pi = current;
+                edgep->colorbfs = 1;
+                edgep->distance = current->distance + 1;
                 Q[tail] = edgep;
                 tail++;
             }
@@ -176,7 +188,7 @@ void            Graph<D, K>::print_path(K u, K v)
             ss << temp[i] << " -> ";
         }
         ss << temp[0];                                  // Add the first element in the vector which is key v
-        cout << ss.str() << endl;
+        cout << ss.str();
     }
 }
 
@@ -195,10 +207,7 @@ string          Graph<D, K>::edge_class(K u, K v)
     Node* uNode = this->get(u);
     Node* vNode = this->get(v);
     for( K key : E[uNode->place]){
-        if(key != v){
-            return "no edge";
-        }
-    }
+        if(key == v){
     
     if(vNode->dpi == uNode){
         return "tree edge";
@@ -218,6 +227,10 @@ string          Graph<D, K>::edge_class(K u, K v)
     }
 
     return "cross edge";
+
+        }
+    }
+    return "no edge";
 }
 
 
@@ -232,23 +245,33 @@ string          Graph<D, K>::edge_class(K u, K v)
 template <class D, class K>
 void            Graph<D, K>::bfs_tree(K source)
 {
+    printf("165 \n");
     bfs(source);
+    printf("166 \n");
     vector<vector<K>> temp;
     stringstream ss;
     for(Node *u : V) {
+        printf("167 \n");
         if(u->colorbfs) {
+            printf("168 \n");
             if(u->distance >= temp.size()) {
+                printf("168.8 \n");
                 temp.resize(temp.size() + 1);
             }
+            printf("169 \n");
             temp[u->distance].push_back(u->key);
         }
     }
+    printf("170 \n");
     for(auto& tem : temp) {
+        printf("171 \n");
         for(K& key : tem) {
             ss << key << " ";
+            printf("172 \n");
         }
         ss << endl;
     }
+    printf("173 \n");
     cout << ss.str();
 }
 
