@@ -20,14 +20,15 @@ template <class D, class K>
 Graph<D, K>::Graph(vector<D> data, vector<K> keys, vector<vector<K>> edges){
     E = edges;
     for(int i = 0; i < keys.size(); i++){
-        Node* newNode = new Node;  // Create a new Node
-        newNode->key = keys[i];
-        newNode->data = data[i];
-        newNode->f1 = -1;
-        newNode->f2 = -1;
-        newNode->color = 0;
-        newNode->dpi = nullptr;
-        V.push_back(newNode);  // Add the new Node to the vector V
+        V[i]->key = keys[i];
+        V[i]->data = data[i];
+        V[i]->f1 = -1;
+        V[i]->f2 = -1;
+        V[i]->color = 0;
+        V[i]->color = 0;
+        V[i]->dpi = nullptr;
+        V[i]->place = i;
+
     }
     this->dfs();
 }
@@ -41,9 +42,9 @@ Graph<D, K>::Graph(vector<D> data, vector<K> keys, vector<vector<K>> edges){
 // Return: pointer to the vertex with the key k
 //========================================================
 template <class D, class K>
-*Node        Graph<D, K>::get(K key)
+typename Graph<D, K>::Node* get(K key)
 {
-    for(auto &node : V) {           // Iterate through all vertices in the Graph
+    for(auto &node : Graph<D,K>::V) {           // Iterate through all vertices in the Graph
         if(node->key == key) {
             return node;            // Returns pointer to the vertex if found
         }
@@ -81,17 +82,16 @@ void            Graph<D, K>::bfs(K source){
     int head = 0, tail = 0;
     for (Node* x : V){
         if(x->key != source){
-            x-> dis = -1;
+            x-> distance = -1;
         }
         else{
-            x-> dis = time;
+            x-> distance = time;
             x->colorbfs = 1;
             Q[tail] = x;
             tail++;
         }
         x-> pi = nullptr;
-    };
-
+    }
     while(tail != head){
         time++;
         Node* current = Q[head];
@@ -99,9 +99,9 @@ void            Graph<D, K>::bfs(K source){
         for(int i = 0; i < V.size(); i ++){
             if(V[i]->key == current->key){
                 for(K edge : E[i]){
-                    Node* edgep = this->Get(edge);
-                    if(edgep->dis == -1){
-                        edgep->dis = time;
+                    Node* edgep = this->get(edge);
+                    if(edgep->distance == -1){
+                        edgep->distance = time;
                         edgep->colorbfs = 1;
                         edgep->pi = current;
                         Q[tail] = edgep;
@@ -122,8 +122,7 @@ void            Graph<D, K>::bfs(K source){
 // Post-condition: None
 // Return: None
 //========================================================
-template <class D, class K>
-void            Graph<D, K>>::dfs(K source)template<class D, class K>
+template<class D, class K>
 void Graph<D,K>::dfs(){
     int time = 0;
     Node* S[V.size()+1];
@@ -140,16 +139,12 @@ int Graph<D,K>::dfs_visit(Node* u, int time){
     time++;
     u->f1 = time;
     u->color = 1;
-    for(int i = 0; i < V.size(); i++){
-        if(V[i] == u){
-            for( K key : E[i]){
-                Node* edge = this->Get(key);
-                if(edge->color == 0){
-                    edge->dpi = u;
-                    time = dfs_visit(edge, time);
-                }
-            }
-        }
+   for( K key : E[u->place]){
+        Node* edge = this->get(key);
+        if(edge->color == 0){
+            edge->dpi = u;
+            time = dfs_visit(edge, time);
+        }  
     }
     u->color = 2;
     time++;
@@ -174,13 +169,13 @@ void            Graph<D, K>::print_path(K u, K v)
             ss << u;
             return;
         }
-        vector<k> temp;
+        vector<K> temp;
         Node *ver = get(v);
         while(ver->key != u) {
-            temp.push(ver->key);
+            temp.push_back(ver->key);
             ver = ver->pi;
         }
-        temp.push(u);
+        temp.push_back(u);
         for(int i = temp.size() - 1; i > 0; i--) {      // Iterate in reverse order so we start with u
             ss << temp[i] << " -> ";
         }
@@ -199,7 +194,9 @@ void            Graph<D, K>::print_path(K u, K v)
 //========================================================
 template <class D, class K>
 string          Graph<D, K>::edge_class(K u, K v)
+
 {
+    return "";
 }
 
 //========================================================
@@ -217,11 +214,11 @@ void            Graph<D, K>::bfs_tree(K source)
     if(sNode != nullptr) {                      // We only move on if we have a valid source vertex
         stringstream ss;
         sNode->color = true;
-        sNode->dis = 0;
+        sNode->distance = 0;
         sNode->pi = nullptr;
         for(auto& node: V) {                    // Iterate through all vertices
             node->color = false;
-            node->dis = -1;
+            node->distance = -1;
             node->pi = nullptr;
         }
         queue<Node*> temp;                      // Initialize queue for traversal
@@ -233,11 +230,11 @@ void            Graph<D, K>::bfs_tree(K source)
             for(int i = 0; i < lvl; i++) {
                 Node * u = temp.front();
                 temp.pop();
-                for(const K& v: V[u->key]) {
+                for(const K& v: V[u->place]) {
                     Node *vNode = get(v);       // Get the pointer to the vertex
                     if(!vNode->color) {
                         vNode->color = true;
-                        vNode->dis = u->dis + 1;
+                        vNode->distance = u->distance + 1;
                         vNode->pi = u;
                         temp.push(vNode);
                         lvlK.push_back(v);

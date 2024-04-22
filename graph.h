@@ -24,12 +24,13 @@ class Graph{
             D data;
             K key;
             Node* pi;
-            int dis;
+            int distance;
             int f1;
             int f2;
             Node* dpi;
             char color;
             bool colorbfs;
+            int place;
         };
 
         vector<Node*> V;
@@ -41,7 +42,7 @@ class Graph{
     public:
         Graph(vector<D> data, vector<K> keys, vector<vector<K>> edges); // Constructor
 
-        *Node get(K key); // Pointer to vertex of the given key
+        Node* get(K key); // Pointer to vertex of the given key
         bool reachable(K u, K v); // Check if vertex of key v is reachable from vertex of key u
         void bfs(K source); // BFS from source vertex of the given key
         void print_path(K u, K v); // Print shortest path from vertex of key u to vertex of key v
@@ -50,6 +51,6 @@ class Graph{
 
 };
 
-#include "graph.cpp"
+// #include "graph.cpp"
 
 #endif
