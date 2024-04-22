@@ -192,8 +192,34 @@ template <class D, class K>
 string          Graph<D, K>::edge_class(K u, K v)
 
 {
-    return "";
+    Node* uNode = this->get(u);
+    Node* vNode = this->get(v);
+    for( K key : E[uNode->place]){
+        if(key != v){
+            return "no edge";
+        }
+    }
+    
+    if(vNode->dpi == uNode){
+        return "tree edge";
+    }
+    while(vNode->dpi != nullptr){
+        if(vNode->dpi == uNode){
+            return "forward edge";
+        }
+        vNode = vNode->dpi;
+    }
+
+    while(uNode->dpi != nullptr){
+        if(uNode->dpi == vNode){
+            return "back edge";
+        }
+        uNode = uNode->dpi;
+    }
+
+    return "cross edge";
 }
+
 
 //========================================================
 // BFS tree
