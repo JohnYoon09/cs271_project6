@@ -18,8 +18,8 @@
 //========================================================
 template <class D, class K>
 Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges){
-    E = edges;
-    for(long unsigned int i = 0; i < keys.size(); i++){
+    E = edges; //set edge vector
+    for(long unsigned int i = 0; i < keys.size(); i++){ //set vector of nodes
         V.push_back(new Graph<D,K>::Node);
         V[i]->key = keys[i];
         V[i]->data = data[i];
@@ -65,7 +65,7 @@ struct Graph<D, K>::Node* Graph<D,K>::get(K key)
 template <class D, class K>
 bool        Graph<D, K>::reachable(K u, K v)
 {
-    bool bu = 0, bv = 0;
+    bool bu = 0, bv = 0; //test of edge case
     for(Node* x : V){
         if(x->key == u){
             bu = 1;
@@ -102,6 +102,7 @@ void            Graph<D, K>::bfs(K source){
         }
         else{
             x-> distance = -1;
+            x->colorbfs = 0;
         }
         x-> pi = nullptr;
     }
@@ -169,8 +170,23 @@ int Graph<D,K>::dfs_visit(Node* u, int time){
 //========================================================
 template <class D, class K>
 void            Graph<D, K>::print_path(K u, K v)
-{
-    if(reachable(u, v)) {                               // We only move on if there exists a path
+{   
+    bool bu = 0, bv = 0;
+    for(Node* x : V){
+        if(x->key == u){
+            bu = 1;
+        }
+        if(x->key == v){
+            bv = 1;
+        }
+    }
+    if(!(bu && bv)){
+        cout << "";
+    }
+    else if( u == v ){
+        cout << u;
+    }
+    else if(reachable(u, v)) {                              // We only move on if there exists a path
         stringstream ss;
         if(u == v) {
             ss << u;
@@ -244,33 +260,30 @@ string          Graph<D, K>::edge_class(K u, K v)
 template <class D, class K>
 void            Graph<D, K>::bfs_tree(K source)
 {
-    printf("165 \n");
     bfs(source);
-    printf("166 \n");
+    int height = 0;
     vector<vector<K>> temp;
     stringstream ss;
     for(Node *u : V) {
-        printf("167 \n");
         if(u && u->colorbfs) { // Adds check if u is not null and have been discovered
-            printf("168 \n");
             if(u->distance >= temp.size()) {
-                printf("168.8 \n");
                 temp.resize(u->distance + 1);
+                height++;
             }
-            printf("169 \n");
             temp[u->distance].push_back(u->key);
         }
     }
-    printf("170 \n");
     for(vector<K> tem : temp) {
-        printf("171 \n");
-        for(K key : tem) {
-            ss << key << " ";
-            printf("172 \n");
+        for(long unsigned int i = 0; i < tem.size(); i++){
+            ss << tem[i];
+            if(i != tem.size()- 1){
+                ss << " ";
+            }
         }
-        ss << "\n";
+        if(tem != temp[height+1]){
+            ss << "\n";
+        }
     }
-    printf("173 \n");
     cout << ss.str();
 }
 

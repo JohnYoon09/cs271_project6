@@ -227,11 +227,8 @@ void test_bfs_tree(Graph<string, string> *G)
     {
         {
         stringstream buffer;
-        printf("100 \n");
         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
-        printf("100 \n");
         G->bfs_tree("T");
-        printf("100 \n");
         cout.rdbuf(prevbuf);
         if (buffer.str() != "T\nS U W\nR Y X\nV")
         {
@@ -241,11 +238,8 @@ void test_bfs_tree(Graph<string, string> *G)
         }
         {
         stringstream buffer;
-        printf("100 \n");
         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
-        printf("100 \n");
         G->bfs_tree("V");
-        printf("100 \n");
         cout.rdbuf(prevbuf);
         if (buffer.str() != "V\nS\nR")
         {
