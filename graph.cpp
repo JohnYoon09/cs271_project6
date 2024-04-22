@@ -18,8 +18,8 @@
 //========================================================
 template <class D, class K>
 Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges){
-    E = edges;
-    for(long unsigned int i = 0; i < keys.size(); i++){
+    E = edges; //set edge vector
+    for(long unsigned int i = 0; i < keys.size(); i++){ //set vector of nodes
         V.push_back(new Graph<D,K>::Node);
         V[i]->key = keys[i];
         V[i]->data = data[i];
@@ -65,7 +65,7 @@ struct Graph<D, K>::Node* Graph<D,K>::get(K key)
 template <class D, class K>
 bool        Graph<D, K>::reachable(K u, K v)
 {
-    bool bu = 0, bv = 0;
+    bool bu = 0, bv = 0; //test of edge case
     for(Node* x : V){
         if(x->key == u){
             bu = 1;
@@ -102,6 +102,7 @@ void            Graph<D, K>::bfs(K source){
         }
         else{
             x-> distance = -1;
+            x->colorbfs = 0;
         }
         x-> pi = nullptr;
     }
@@ -169,8 +170,23 @@ int Graph<D,K>::dfs_visit(Node* u, int time){
 //========================================================
 template <class D, class K>
 void            Graph<D, K>::print_path(K u, K v)
-{
-    if(reachable(u, v)) {                               // We only move on if there exists a path
+{   
+    bool bu = 0, bv = 0;
+    for(Node* x : V){
+        if(x->key == u){
+            bu = 1;
+        }
+        if(x->key == v){
+            bv = 1;
+        }
+    }
+    if(!(bu && bv)){
+        cout << "";
+    }
+    else if( u == v ){
+        cout << u;
+    }
+    else if(reachable(u, v)) {                              // We only move on if there exists a path
         stringstream ss;
         if(u == v) {
             ss << u;
@@ -264,11 +280,7 @@ void            Graph<D, K>::bfs_tree(K source)
                 ss << " ";
             }
         }
-        // for(K key : tem) {
-        //     ss << key << " ";
-        //     if()
-        // }
-        if(tem != temp[height + 1]){
+        if(tem != temp[height+1]){
             ss << "\n";
         }
     }
