@@ -24,8 +24,8 @@ template <typename D, typename K>
 //========================================================
 // Get
 // Return pointer to the vertex corresponding to the key k
-// Parameters: k - key
-// Pre-condition: None
+// Parameters: key - key
+// Pre-condition: key must be provided
 // Post-condition: None
 // Return: pointer to the vertex with the key k
 //========================================================
@@ -44,7 +44,7 @@ template <typename D, typename K>
 // Reachable
 // Determines if one vertex is reachable from another vertex by providing keys of the vertices
 // Parameters: u - key, v - key
-// Pre-condition: None
+// Pre-condition: keys u anv v must be provided
 // Post-condition: None
 // Return: bool value indicating if vertex with key v is reachable from vertex with key u
 //========================================================
@@ -73,7 +73,7 @@ void            Graph<D, K>::bfs(K source)
 // Print path
 // Prints the shortes path from a vertex to another
 // Parameters: u - key, v - key
-// Pre-condition: None
+// Pre-condition: keys u and v must be provided
 // Post-condition: None
 // Return: None
 //========================================================
@@ -117,8 +117,8 @@ string          Graph<D, K>::edge_class(K u, K v)
 //========================================================
 // BFS tree
 // Prints the bfs tree for the source vertex determined by given key
-// Parameters: s - key of source vertex
-// Pre-condition: None
+// Parameters: source - key of source vertex
+// Pre-condition: key of the source vertex must be provided
 // Post-condition: None
 // Return: None
 //========================================================
