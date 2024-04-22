@@ -40,7 +40,7 @@ class Graph{
         int dfs_visit(Node* u, int time);
 
     public:
-        Graph(vector<D> data, vector<K> keys, vector<vector<K>> edges); // Constructor
+        Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges); // Constructor
 
         Node* get(K key); // Pointer to vertex of the given key
         bool reachable(K u, K v); // Check if vertex of key v is reachable from vertex of key u

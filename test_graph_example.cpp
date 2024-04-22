@@ -47,14 +47,17 @@ void test_get(Graph<string, string> *G)
 {
     try
     {
+        cout << "10" << endl;
         if (G->get("S") == nullptr || G->get("S")->data != "S data")
         {
             cout << "Incorrect result getting vertex \"s\"" << endl;
         }
+        cout << "12" << endl;
         if (G->get("a") != nullptr)
         {
             cout << "Incorrect result getting non-existant vertex \"a\"" << endl;
         }
+        cout << "13" << endl;
     }
     catch (exception &e)
     {
@@ -70,14 +73,17 @@ void test_reachable(Graph<string, string> *G)
         {
             cout << "Incorrectly identified adjacent vertex \"V\" as unreachable from \"R\"" << endl;
         }
+        cout << 30 << endl;
         if (!G->reachable("X", "W"))
         {
             cout << "Incorrectly identified \"W\" as unreachable from \"X\"" << endl;
         }
+        cout << 30 << endl;
         if (G->reachable("S", "A"))
         {
             cout << "Incorrectly identified non-existant vetex \"A\" as reachable from \"S\"" << endl;
         }
+        cout << 30 << endl;
     }
     catch (exception &e)
     {
@@ -166,8 +172,11 @@ void test_bfs_tree(Graph<string, string> *G)
     try
     {
         stringstream buffer;
+        printf("100 \n");
         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        printf("100 \n");
         G->bfs_tree("T");
+        printf("100 \n");
         cout.rdbuf(prevbuf);
         if (buffer.str() != "T\nS U W\nR Y X\nV")
         {
@@ -184,13 +193,21 @@ void test_bfs_tree(Graph<string, string> *G)
 int main()
 {
 
+    cout << "f0" << endl;
     Graph<string, string> *G = generate_graph("graph_description.txt");
+    cout << "f1" << endl;
     test_get(G);
+    cout << "f2" << endl;
     test_reachable(G);
+    cout << "f3" << endl;
     test_bfs(G);
+    cout << "f4" << endl;
     test_print_path(G);
-    //test_edge_class(G);
-    //test_bfs_tree(G);
+    cout << "f5" << endl;
+    test_edge_class(G);
+    cout << "f6" << endl;
+    test_bfs_tree(G);
+    cout << "f7" << endl;
 
     cout << "Testing completed" << endl;
 
