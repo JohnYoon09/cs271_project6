@@ -252,11 +252,11 @@ void            Graph<D, K>::bfs_tree(K source)
     stringstream ss;
     for(Node *u : V) {
         printf("167 \n");
-        if(u->colorbfs) {
+        if(u && u->colorbfs) { // Adds check if u is not null and have been discovered
             printf("168 \n");
             if(u->distance >= temp.size()) {
                 printf("168.8 \n");
-                temp.resize(temp.size() + 1);
+                temp.resize(u->distance + 1);
             }
             printf("169 \n");
             temp[u->distance].push_back(u->key);
