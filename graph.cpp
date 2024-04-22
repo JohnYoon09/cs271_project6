@@ -244,33 +244,34 @@ string          Graph<D, K>::edge_class(K u, K v)
 template <class D, class K>
 void            Graph<D, K>::bfs_tree(K source)
 {
-    printf("165 \n");
     bfs(source);
-    printf("166 \n");
+    int height = 0;
     vector<vector<K>> temp;
     stringstream ss;
     for(Node *u : V) {
-        printf("167 \n");
         if(u && u->colorbfs) { // Adds check if u is not null and have been discovered
-            printf("168 \n");
             if(u->distance >= temp.size()) {
-                printf("168.8 \n");
                 temp.resize(u->distance + 1);
+                height++;
             }
-            printf("169 \n");
             temp[u->distance].push_back(u->key);
         }
     }
-    printf("170 \n");
     for(vector<K> tem : temp) {
-        printf("171 \n");
-        for(K key : tem) {
-            ss << key << " ";
-            printf("172 \n");
+        for(long unsigned int i = 0; i < tem.size(); i++){
+            ss << tem[i];
+            if(i != tem.size()- 1){
+                ss << " ";
+            }
         }
-        ss << "\n";
+        // for(K key : tem) {
+        //     ss << key << " ";
+        //     if()
+        // }
+        if(tem != temp[height + 1]){
+            ss << "\n";
+        }
     }
-    printf("173 \n");
     cout << ss.str();
 }
 
